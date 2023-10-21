@@ -1,5 +1,7 @@
 import express from 'express';
 import { config } from 'dotenv';
+import router from './routes/urlRoute.js';
+import mongoose from 'mongoose';
 
 config({
     path: './.env'
@@ -8,21 +10,20 @@ config({
 const app = express();
 
 app.get('/', (req, res, next) => {
-    res.send("Hello World");
+    res.send("Hello World")
 })
 
-app.post('/URL', (req, res, next) => {
+app.use(express.json());
+app.use('/url', router);
 
-})
-
-app.get('/:id', (req, res, next) => {
-
-})
-app.get('//analytics/:id', (req, res, next) => {
-
-})
-
-
+mongoose.connect(process.env.URI)
+    .then(() => {
+        try {
+            console.log("DB connected");
+        } catch (e) {
+            console.log(e);
+        }
+    });
 
 const port = process.env.PORT || 4000;
 app.listen(port, () => {
